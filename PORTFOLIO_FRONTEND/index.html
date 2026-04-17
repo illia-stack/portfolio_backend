@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Illia Shapshalov | Front-end Web Developer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <nav class="navbar">
+      <button id="theme-toggle">🌙</button>
+      <h1 class="logo">Illia Shapshalov</h1>
+
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+
+  <!-- HOME -->
+  <section id="home" class="home">
+        <p class="intro">Hello, I'm</p>
+        <h1 class="name">Illia Shapshalov</h1>
+        <h2 class="hero-title">Beginner in fullstack</h2>
+        
+  </section>
+
+
+
+  <!-- ABOUT -->
+  <section id="about" class="about reveal">
+    <div class="section-inner about-content">
+
+      <div class="about-image">
+        <img src="./me.jpg" alt="Illia Shapshalov" />
+      </div>
+
+     
+
+      <div class="about-text">
+        <h2>About Me</h2>
+
+       
+        <p>
+          I'm studying to build the websites, integrate AI and automate processes with clean code and seamless user
+          experiences
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <!-- PROJECTS -->
+  <section id="projects" class="projects reveal">
+    <div class="section-inner">
+      <h2>My Projects</h2>
+
+      <div class="project-list">
+        <div class="project-card">
+          <h3>Gardening online shop</h3>
+          <p>Functional online shop including most of modern features</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  
+  <!-- CONTACT -->
+  <section id="contact" class="contact reveal">
+    <div class="section-inner">
+      <h2>Contact Me</h2>
+
+      
+
+      <form action="/1_Portfolio/PORTFOLIO_BACKEND/send.php" method="POST">
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Your name"
+                            required
+                        />
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Your email"
+                            required
+                        />
+
+                        <textarea
+                            name="message"
+                            placeholder="Your message"
+                            required
+                        ></textarea>
+
+                        <button class="btn" type="submit">Send</button>
+        </form>
+    </div>
+  </section>
+
+
+
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Footer</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
