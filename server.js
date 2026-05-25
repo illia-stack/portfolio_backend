@@ -19,12 +19,27 @@ app.get("/", (req, res) => {
 
 // Kontaktformular
 app.post("/api/contact", async (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, email, message, lang } = req.body;
+    
+  const responses = {
+    en: {
+      success: "Message sent successfully!",
+      error: "Email sending failed",
+      required: "All fields required"
+    },
+    de: {
+      success: "Nachricht erfolgreich gesendet!",
+      error: "E-Mail konnte nicht gesendet werden",
+      required: "Alle Felder sind erforderlich"
+    }
+  };
+
+  const t = responses[lang] || responses.en;
 
   if (!name || !email || !message) {
     return res.status(400).json({
       success: false,
-      message: "All fields required"
+      message: t.required
     });
   }
 
@@ -49,14 +64,14 @@ Message: ${message}
 
     return res.status(200).json({
       success: true,
-      message: "Message sent successfully!"
+      message: t.success
     });
   } catch (error) {
     console.error(error.response?.body || error);
 
     return res.status(500).json({
       success: false,
-      message: "Email sending failed"
+      message: t.error
     });
   }
 });
