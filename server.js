@@ -1,82 +1,106 @@
 const express = require("express");
 const cors = require("cors");
-const sgMail = require("@sendgrid/mail");
+const { Resend } = require("resend");
 
 const app = express();
 
 app.use(cors({
-  origin: "https://portfolio-frontend-a6d8.onrender.com"
+  origin: "https://portfolio-frontend-a6d8.onrender.com",
+  methods: ["POST"]
 }));
+
 app.use(express.json());
 
-// SendGrid API Key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 // Test route
 app.get("/", (req, res) => {
   res.send("API running");
 });
 
-// Kontaktformular
-app.post("/api/contact", async (req, res) => {
-  const { name, email, message, lang } = req.body;
-    
-  const responses = {
-    en: {
-      success: "Message sent successfully!",
-      error: "Email sending failed",
-      required: "All fields required"
-    },
-    de: {
-      success: "Nachricht erfolgreich gesendet!",
-      error: "E-Mail konnte nicht gesendet werden",
-      required: "Alle Felder sind erforderlich"
-    }
-  };
 
-  const t = responses[lang] || responses.en;
+// Contact form
+app.post("/api/contact", async (req, res) => {
+
+  const { name, email, message } = req.body;
+
 
   if (!name || !email || !message) {
     return res.status(400).json({
       success: false,
-      message: t.required
+      message: "All fields are required"
     });
   }
 
-  const msg = {
-    to: "illiashapshalov38@gmail.com",
-    from: {
-      email: "illiashapshalov38@gmail.com",
-      name: "ILLIA"
-    }, 
-    subject: "New Portfolio Message",
-    text: `
-New message from portfolio:
 
-Name: ${name}
-Email: ${email}
-Message: ${message}
-    `,
-  };
+  if (!email.match(/^\S+@\S+\.\S+$/)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid email"
+    });
+  }
+
 
   try {
-    await sgMail.send(msg);
+
+    await resend.emails.send({
+
+      from: "Portfolio <onboarding@resend.dev>",
+
+      to: [
+        "illiashapshalov38@gmail.com"
+      ],
+
+      reply_to: email,
+
+      subject: "New Portfolio Message",
+
+      html: `
+        <h3>New message from portfolio</h3>
+
+        <p>
+          <strong>Name:</strong> ${name}
+        </p>
+
+        <p>
+          <strong>Email:</strong> ${email}
+        </p>
+
+        <p>
+          <strong>Message:</strong>
+        </p>
+
+        <p>
+          ${message}
+        </p>
+      `
+    });
+
 
     return res.status(200).json({
       success: true,
-      message: t.success
+      message: "Message sent successfully!"
     });
-  } catch (error) {
-    console.error(error.response?.body || error);
+
+
+  } catch(error) {
+
+    console.error(error);
 
     return res.status(500).json({
       success: false,
-      message: t.error
+      message: "Email sending failed"
     });
+
   }
+
 });
 
+
 const PORT = process.env.PORT || 3000;
+
 
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
